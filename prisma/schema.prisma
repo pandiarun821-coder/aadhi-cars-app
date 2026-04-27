@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String       @id @default(cuid())
+  username String       @unique
+  name     String?
+  password String
+  role     String       @default("SUB") // MAIN or SUB
+  indents  FuelIndent[]
+  gatepasses Gatepass[]
+}
+
+model FuelIndent {
+  id             String   @id @default(cuid())
+  fiNo           String   @unique
+  date           String
+  time           String
+  companyName    String   @default("AADHI CARS PVT LTD")
+  vehicleNo      String
+  model          String
+  km             String
+  dseTl          String
+  fuelType       String // Petrol or Diesel
+  previousKm     String?
+  location       String?
+  petrolAgent    String?
+  remarks        String?
+  sign           String?
+  approvalStatus String?  @default("Pending") // Pending, Approved, Rejected
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Gatepass {
+  id             String   @id @default(cuid())
+  gpNo           String   @unique
+  date           String
+  time           String
+  companyName    String   @default("AADHI CARS PVT LTD")
+  rmName         String
+  customerName   String
+  customerContact String
+  vehicleNo      String
+  purpose        String
+  place          String
+  openingKm      String?
+  sign           String?
+  approvalStatus String?  @default("Pending") // Pending, Approved, Rejected
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model DemoVehicle {
+  id        String   @id @default(cuid())
+  vehicleNo String   @unique
+  model     String
+  fleet     String?
+  createdAt DateTime @default(now())
+}
