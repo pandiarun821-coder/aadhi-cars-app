@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { CarFront, KeyRound, User, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -85,6 +86,11 @@ export function LoginForm() {
               placeholder="Enter your password"
               required
             />
+          </div>
+          <div className="flex justify-end pt-1">
+            <Link href="/forgot-password" className="text-xs font-medium text-blue-500 hover:text-blue-400 transition-colors">
+              Forgot Password?
+            </Link>
           </div>
         </div>
 

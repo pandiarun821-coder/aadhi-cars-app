@@ -1,8 +1,9 @@
 import { prisma } from "@/../lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { Trash2, UserPlus } from "lucide-react";
-import { createUser, deleteUser } from "@/app/actions";
+import { UserPlus } from "lucide-react";
+import { createUser } from "@/app/actions";
+import { UserActions } from "./UserActions";
 
 export default async function UsersPage() {
   const { authOptions } = await import("@/../lib/auth");
@@ -50,13 +51,7 @@ export default async function UsersPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      {u.role !== 'MAIN' && (
-                        <form action={deleteUser.bind(null, u.id)}>
-                          <button type="submit" className="inline-flex items-center gap-1 rounded bg-red-500/10 px-2 py-1 text-xs font-medium text-red-500 hover:bg-red-500/20 transition-colors">
-                            <Trash2 className="w-3.5 h-3.5" /> Remove
-                          </button>
-                        </form>
-                      )}
+                      <UserActions user={{ id: u.id, role: u.role, name: u.name }} />
                     </td>
                   </tr>
                 ))}
@@ -94,6 +89,15 @@ export default async function UsersPage() {
                 />
               </div>
               <div className="space-y-2">
+                <label className="text-sm font-medium text-zinc-300">Email Address (for recovery)</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 px-4 py-2 text-white placeholder-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="user@example.com"
+                />
+              </div>
+              <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-300">Password</label>
                 <input
                   type="password"
@@ -102,6 +106,18 @@ export default async function UsersPage() {
                   className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 px-4 py-2 text-white placeholder-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="••••••••"
                 />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-zinc-300">Account Type</label>
+                <select
+                  name="role"
+                  required
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none"
+                  defaultValue="SUB"
+                >
+                  <option value="SUB">Sub User</option>
+                  <option value="MAIN">Main User (Admin)</option>
+                </select>
               </div>
               <button
                 type="submit"

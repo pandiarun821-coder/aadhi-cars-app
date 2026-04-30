@@ -99,9 +99,13 @@ export async function createUser(formData: FormData) {
 
   const name = formData.get("name") as string;
   const username = formData.get("username") as string;
+  const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const formRole = formData.get("role") as string;
   
   if (!username || !password) throw new Error("Missing fields");
+
+  const role = formRole === "MAIN" ? "MAIN" : "SUB";
 
   const bcrypt = await import("bcryptjs");
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -110,8 +114,9 @@ export async function createUser(formData: FormData) {
     data: {
       name,
       username,
+      email: email || null,
       password: hashedPassword,
-      role: "SUB",
+      role,
     },
   });
 
@@ -161,4 +166,24 @@ export async function deleteVehicle(id: string) {
 
   await prisma.demoVehicle.delete({ where: { id } });
   revalidatePath("/vehicles");
+}
+
+export async function updateUserPassword(formData: FormData) {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role !== "MAIN") throw new Error("Unauthorized");
+
+  const id = formData.get("userId") as string;
+  const newPassword = formData.get("newPassword") as string;
+
+  if (!id || !newPassword) throw new Error("Missing fields");
+
+  const bcrypt = await import("bcryptjs");
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await prisma.user.update({
+    where: { id },
+    data: { password: hashedPassword },
+  });
+
+  revalidatePath("/users");
 }
