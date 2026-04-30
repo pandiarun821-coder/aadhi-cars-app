@@ -3,6 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { LogOut, FileText, LayoutDashboard, DatabaseBackup, CheckSquare, Users, Car } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export function Sidebar() {
@@ -26,8 +27,15 @@ export function Sidebar() {
 
   return (
     <div className="flex h-full w-64 flex-col bg-zinc-950 border-r border-zinc-800 print:hidden">
-      <div className="flex h-16 items-center px-6 border-b border-zinc-800">
-        <h1 className="text-xl font-bold tracking-tight text-white">AADHI CARS</h1>
+      <div className="flex h-24 items-center justify-center border-b border-zinc-800 bg-zinc-900/50">
+        <Image 
+          src="/logo.png" 
+          alt="Aadhi Cars Logo" 
+          width={180} 
+          height={80} 
+          className="object-contain max-h-16"
+          priority
+        />
       </div>
       <div className="flex-1 px-4 py-6 space-y-2">
         {links.map((link) => {
