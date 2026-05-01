@@ -35,6 +35,7 @@ export function Sidebar() {
           height={80} 
           className="object-contain max-h-16"
           priority
+          unoptimized
         />
       </div>
       <div className="flex-1 px-4 py-6 space-y-2">

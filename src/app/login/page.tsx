@@ -14,6 +14,7 @@ export default function LoginPage() {
             height={120} 
             className="object-contain mb-4"
             priority
+            unoptimized
           />
           <h1 className="text-3xl font-bold tracking-tight text-white hidden">
             AADHI CARS PVT LTD
