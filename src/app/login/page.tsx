@@ -20,7 +20,7 @@ export default function LoginPage() {
             AADHI CARS PVT LTD
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
-            Fuel Indent & Gatepass Management
+            Fuel Indent & Gatepass Management (v1.1)
           </p>
         </div>
         <LoginForm />
