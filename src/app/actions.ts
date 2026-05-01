@@ -187,3 +187,30 @@ export async function updateUserPassword(formData: FormData) {
 
   revalidatePath("/users");
 }
+
+export async function updateUser(formData: FormData) {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role !== "MAIN") throw new Error("Unauthorized");
+
+  const id = formData.get("userId") as string;
+  const name = formData.get("name") as string;
+  const username = formData.get("username") as string;
+  const email = formData.get("email") as string;
+  const formRole = formData.get("role") as string;
+
+  if (!id || !username) throw new Error("Missing fields");
+
+  const role = formRole === "MAIN" ? "MAIN" : "SUB";
+
+  await prisma.user.update({
+    where: { id },
+    data: {
+      name,
+      username,
+      email: email || null,
+      role,
+    },
+  });
+
+  revalidatePath("/users");
+}

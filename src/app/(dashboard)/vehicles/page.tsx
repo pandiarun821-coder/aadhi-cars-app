@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Trash2, Car } from "lucide-react";
 import { addVehicle, deleteVehicle } from "@/app/actions";
+import VehicleTableClient from "./VehicleTableClient";
 
 export default async function VehiclesPage() {
   const { authOptions } = await import("@/../lib/auth");
@@ -27,46 +28,7 @@ export default async function VehiclesPage() {
         
         {/* Vehicles List */}
         <div className="md:col-span-2 space-y-6">
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden">
-            <table className="w-full text-left text-sm text-zinc-300">
-              <thead className="bg-zinc-900/80 text-xs uppercase text-zinc-400 border-b border-zinc-800">
-                <tr>
-                  <th className="px-6 py-4 font-medium">Vehicle No</th>
-              <th className="px-6 py-4 font-medium">Model</th>
-                  <th className="px-6 py-4 font-medium">Fleet</th>
-                  <th className="px-6 py-4 font-medium text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800">
-                {vehicles.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-zinc-500">
-                      No demo vehicles fed yet.
-                    </td>
-                  </tr>
-                ) : (
-                  vehicles.map((v) => (
-                    <tr key={v.id} className="transition-colors hover:bg-zinc-800/50">
-                      <td className="px-6 py-4 font-medium text-white">{v.vehicleNo}</td>
-                      <td className="px-6 py-4">{v.model}</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center rounded-full bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-300">
-                          {v.fleet || "None"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <form action={deleteVehicle.bind(null, v.id)}>
-                          <button type="submit" className="inline-flex items-center gap-1 rounded bg-red-500/10 px-2 py-1 text-xs font-medium text-red-500 hover:bg-red-500/20 transition-colors">
-                            <Trash2 className="w-3.5 h-3.5" /> Remove
-                          </button>
-                        </form>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          <VehicleTableClient vehicles={vehicles} />
         </div>
 
         {/* Add Vehicle Form */}

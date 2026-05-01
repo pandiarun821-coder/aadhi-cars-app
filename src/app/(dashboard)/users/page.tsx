@@ -51,7 +51,7 @@ export default async function UsersPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <UserActions user={{ id: u.id, role: u.role, name: u.name }} />
+                      <UserActions user={{ id: u.id, role: u.role, name: u.name, username: u.username, email: u.email }} currentUserId={session.user.id} />
                     </td>
                   </tr>
                 ))}
